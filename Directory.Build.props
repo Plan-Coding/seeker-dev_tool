@@ -4,9 +4,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Deterministic>true</Deterministic>
-    <Version>0.3.0</Version>
+    <Version>0.4.0</Version>
     <Authors>Seeker</Authors>
     <Product>Seeker DevToolbox</Product>
     <NeutralLanguage>zh-Hans</NeutralLanguage>
   </PropertyGroup>
 </Project>
+

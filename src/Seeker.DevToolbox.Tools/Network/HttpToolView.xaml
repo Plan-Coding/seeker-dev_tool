@@ -1,0 +1,161 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Network.HttpToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="HTTP 请求"
+            Description="发送 HTTP 请求并查看状态码、耗时、响应头和响应体;请求头每行一个 Name: Value。" />
+
+        <Grid Grid.Row="1" Margin="0,18,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Methods}"
+                SelectedIndex="{Binding MethodIndex}" />
+
+            <ui:TextBox
+                Grid.Column="1"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                PlaceholderText="https://api.example.com/endpoint"
+                Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ui:Button
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                Appearance="Primary"
+                Command="{Binding SendCommand}"
+                Content="发送" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="请求头" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    Height="92"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="12"
+                    HorizontalScrollBarVisibility="Auto"
+                    PlaceholderText="Accept: application/json"
+                    Text="{Binding Headers, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="请求体" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    Height="92"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="12"
+                    HorizontalScrollBarVisibility="Auto"
+                    PlaceholderText="POST/PUT/PATCH 时发送"
+                    Text="{Binding Body, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="0,14,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                VerticalAlignment="Center"
+                FontFamily="Cascadia Mono, Consolas"
+                FontSize="13"
+                Text="{Binding StatusLine}"
+                TextTrimming="CharacterEllipsis" />
+
+            <ui:Button
+                Grid.Column="1"
+                Appearance="Secondary"
+                Command="{Binding CopyBodyCommand}"
+                Content="复制响应体" />
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="响应头" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="12"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding ResponseHeaders, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="响应体" />
+                <controls:CodeEditor
+                    Grid.Row="1"
+                    HighlightingName="Json"
+                    IsReadOnly="True"
+                    Text="{Binding ResponseBody, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="5"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>

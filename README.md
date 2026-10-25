@@ -4,25 +4,27 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ![首页](docs/screenshots/overview.png)
 
+![HTTP 请求](docs/screenshots/http.png)
+
 ![文本 Diff](docs/screenshots/diff.png)
 
 ![颜色转换](docs/screenshots/color.png)
 
 ![JSON 深色主题](docs/screenshots/json-dark.png)
 
-## 当前状态(M2 已完成)
+## 当前状态(M3 已完成)
 
 - [x] Fluent 主窗口:WPF-UI `FluentWindow` + Win11 Mica + 圆角
-- [x] 左侧 `NavigationView`:搜索过滤、最近使用排序、快捷键 `Ctrl+K`
+- [x] 左侧 `NavigationView`:搜索过滤、最近使用排序、支持滚动、快捷键 `Ctrl+K`
 - [x] 深色 / 浅色 / 跟随系统三种主题,自动持久化
 - [x] 设置、日志、窗口尺寸写入数据目录,不写注册表
 - [x] 单实例运行,重复启动唤起已有窗口
 - [x] 全局异常兜底 + Serilog 滚动日志
 - [x] 工具模块化:`IToolModule` 契约 + 按需创建、缓存视图
-- [x] AvalonEdit 代码编辑器:行号、等宽字体、主题感知 JSON 高亮
+- [x] AvalonEdit 代码编辑器:行号、双向绑定、主题感知 JSON 高亮
 - [x] 绿色版发布脚本(目录版 + 单文件 exe + zip + SHA256)
-- [x] 104 个 Core 单元测试
-- [x] 13 个工具全部通过真实点击冒烟测试
+- [x] 117 个 Core 单元测试
+- [x] 16 个工具全部通过真实点击冒烟测试
 
 ### 工具清单
 
@@ -31,8 +33,10 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 常用 | 欢迎 | 运行模式、数据目录、快捷键提示 |
 | 数据 | JSON 格式化 | 格式化 / 压缩 / 校验,支持尾逗号、注释 |
 | 数据 | XML 格式化 | 格式化 / 压缩 / 校验,保留声明与中文 |
+| 数据 | YAML / JSON | YAML ↔ JSON 互转、YAML 格式化与校验 |
 | 编码 | Base64 编解码 | UTF-8 文本互转,URL-safe 变体 |
 | 编码 | URL 编解码 | 组件级编码/解码,表单 `+` 空格语义 |
+| 编码 | 编码转换 | GBK / UTF-8 / Big5 / UTF-16 互转,修复乱码 |
 | 时间 | 时间戳转换 | 秒/毫秒/自动识别,日期 ↔ 本地/UTC/ISO 8601 |
 | 文本 | 文本处理 | 驼峰/Pascal/下划线/短横线/常量、排序、去重、去空行、加行号 |
 | 文本 | 文本 Diff | 逐行比较,新增/删除/修改高亮 |
@@ -41,6 +45,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 安全 | JWT 解析 | Header/Payload 解码,exp/nbf 检查 |
 | 生成 | UUID 生成 | UUID v4 / v7,批量、大小写、连字符 |
 | 设计 | 颜色转换 | HEX / RGB / HSL / HSV,颜色预览 |
+| 网络 | HTTP 请求 | GET/POST/PUT/PATCH/DELETE,状态码、响应头、响应体 |
 
 ## 快速开始
 
@@ -71,10 +76,10 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ```
 artifacts/
-├─ Seeker.DevToolbox-0.3.0-portable/        # 目录绿色版
-├─ Seeker.DevToolbox-0.3.0-single/          # 单文件版
-├─ Seeker.DevToolbox-0.3.0-portable-win-x64.zip
-├─ Seeker.DevToolbox-0.3.0-single-win-x64.zip
+├─ Seeker.DevToolbox-0.4.0-portable/        # 目录绿色版
+├─ Seeker.DevToolbox-0.4.0-single/          # 单文件版
+├─ Seeker.DevToolbox-0.4.0-portable-win-x64.zip
+├─ Seeker.DevToolbox-0.4.0-single-win-x64.zip
 └─ SHA256SUMS.txt
 ```
 
@@ -144,7 +149,7 @@ ViewModel 继承 `ToolViewModelBase` 即可复用状态栏、错误标记和剪�
 | UI | WPF + WPF-UI 4.3 |
 | 编辑器 | AvalonEdit 6.3(主题感知 JSON 高亮) |
 | MVVM | CommunityToolkit.Mvvm |
-| Diff | DiffPlex |
+| Diff / YAML | DiffPlex / YamlDotNet |
 | 宿主/DI | Microsoft.Extensions.Hosting |
 | 日志 | Serilog(滚动文件) |
 | 测试 | xUnit |
@@ -153,8 +158,9 @@ ViewModel 继承 `ToolViewModelBase` 即可复用状态栏、错误标记和剪�
 ## 已知限制 / 下一步
 
 - 单文件版首次启动较慢(`%TEMP%` 解压),日常使用建议目录版。
-- 未做自动更新与代码签名。
-- XML/YAML 暂未做语法高亮;JSON/JWT 已使用主题感知高亮。
-- M3 计划:YAML/JSON5、编码检测与转换、HTTP 请求测试、端口/进程查看、全局热键、自动更新。
+- HTTP 工具暂不支持文件上传、客户端证书和 Cookie 管理。
+- XML / YAML 暂未做语法高亮;JSON / JWT 已使用主题感知高亮。
+- 未做代码签名。
+- 下一步:端口/进程查看、JSON5、文件编码检测与转换、YAML 高亮。
 
 详细选型与架构见 [docs/技术选型与架构方案.md](docs/技术选型与架构方案.md)。

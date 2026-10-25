@@ -1,12 +1,15 @@
 using Seeker.DevToolbox.Tools.Codecs;
 using Seeker.DevToolbox.Tools.Design;
+using Seeker.DevToolbox.Tools.TextEncodings;
 using Seeker.DevToolbox.Tools.Generators;
 using Seeker.DevToolbox.Tools.Json;
+using Seeker.DevToolbox.Tools.Network;
 using Seeker.DevToolbox.Tools.Security;
 using Seeker.DevToolbox.Tools.Text;
 using Seeker.DevToolbox.Tools.Time;
 using Seeker.DevToolbox.Tools.Welcome;
 using Seeker.DevToolbox.Tools.Xml;
+using Seeker.DevToolbox.Tools.Yaml;
 using Seeker.DevToolbox.UI.Contracts;
 
 namespace Seeker.DevToolbox.Tools;
@@ -21,8 +24,10 @@ public static class ToolCatalog
         new WelcomeToolModule(),
         new JsonToolModule(),
         new XmlToolModule(),
+        new YamlToolModule(),
         new Base64ToolModule(),
         new UrlToolModule(),
+        new EncodingToolModule(),
         new UnixTimeToolModule(),
         new TextToolModule(),
         new DiffToolModule(),
@@ -30,6 +35,8 @@ public static class ToolCatalog
         new HashToolModule(),
         new JwtToolModule(),
         new IdToolModule(),
-        new ColorToolModule()
+        new ColorToolModule(),
+        new HttpToolModule()
     ];
 }
+

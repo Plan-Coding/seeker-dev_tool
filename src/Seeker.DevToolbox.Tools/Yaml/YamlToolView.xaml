@@ -1,0 +1,91 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Yaml.YamlToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="YAML / JSON"
+            Description="YAML 与 JSON 双向转换,也可以只做 YAML 格式化与语法校验。" />
+
+        <WrapPanel Grid.Row="1" Margin="0,18,0,14">
+            <ui:Button
+                Appearance="Primary"
+                Command="{Binding YamlToJsonCommand}"
+                Content="YAML → JSON" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding JsonToYamlCommand}"
+                Content="JSON → YAML" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding FormatYamlCommand}"
+                Content="格式化 YAML" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding LoadSampleCommand}"
+                Content="示例" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ClearCommand}"
+                Content="清空" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding CopyCommand}"
+                Content="复制结果" />
+        </WrapPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
+                <controls:CodeEditor
+                    Grid.Row="1"
+                    HighlightingName=""
+                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输出" />
+                <controls:CodeEditor
+                    Grid.Row="1"
+                    HighlightingName="{Binding OutputHighlighting}"
+                    IsReadOnly="True"
+                    Text="{Binding Output, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="3"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>

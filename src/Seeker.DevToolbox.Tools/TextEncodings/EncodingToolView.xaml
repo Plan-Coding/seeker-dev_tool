@@ -1,0 +1,125 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.TextEncodings.EncodingToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="编码转换"
+            Description="按源编码还原字节,再按目标编码解码;常用于修复 GBK/UTF-8 乱码。" />
+
+        <WrapPanel Grid.Row="1" Margin="0,18,0,0">
+            <ComboBox
+                Width="160"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Encodings}"
+                DisplayMemberPath="DisplayName"
+                SelectedIndex="{Binding SourceIndex}" />
+
+            <TextBlock
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                Text="→" />
+
+            <ComboBox
+                Width="160"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Encodings}"
+                DisplayMemberPath="DisplayName"
+                SelectedIndex="{Binding TargetIndex}" />
+
+            <ui:Button
+                Margin="12,0,0,0"
+                Appearance="Primary"
+                Command="{Binding ConvertCommand}"
+                Content="转换" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding SwapCommand}"
+                Content="交换" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding LoadSampleCommand}"
+                Content="示例" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ClearCommand}"
+                Content="清空" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding CopyCommand}"
+                Content="复制结果" />
+        </WrapPanel>
+
+        <TextBlock
+            Grid.Row="2"
+            Margin="2,10,0,14"
+            Style="{StaticResource ToolHintText}"
+            Text="示例:输入「浣犲ソ」,源编码 GBK、目标 UTF-8,可还原为「你好」。" />
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输出" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding Output, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="4"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>
+
