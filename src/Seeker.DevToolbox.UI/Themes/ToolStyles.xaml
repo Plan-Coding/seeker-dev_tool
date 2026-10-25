@@ -23,4 +23,8 @@
     <Style x:Key="ToolMonoText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Cascadia Mono, Consolas" />
     </Style>
+
+    <SolidColorBrush x:Key="DiffAddedBrush" Color="#2E7D32" Opacity="0.18" />
+    <SolidColorBrush x:Key="DiffRemovedBrush" Color="#C62828" Opacity="0.18" />
+    <SolidColorBrush x:Key="DiffModifiedBrush" Color="#F9A825" Opacity="0.16" />
 </ResourceDictionary>

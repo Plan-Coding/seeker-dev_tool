@@ -9,6 +9,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -53,7 +54,43 @@
                 Content="复制结果" />
         </StackPanel>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                Text="文件" />
+
+            <ui:TextBox
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                IsReadOnly="True"
+                PlaceholderText="选择任意文件计算哈希…"
+                Text="{Binding FilePath, Mode=OneWay}" />
+
+            <ui:Button
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ChooseFileCommand}"
+                Content="选择文件" />
+
+            <ui:Button
+                Grid.Column="3"
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ComputeFileCommand}"
+                Content="计算文件哈希" />
+        </Grid>
+
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="14" />
@@ -92,13 +129,13 @@
                     HorizontalScrollBarVisibility="Auto"
                     IsReadOnly="True"
                     Text="{Binding Output, Mode=OneWay}"
-                    TextWrapping="NoWrap"
+                    TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
             </Grid>
         </Grid>
 
         <controls:ToolStatusBar
-            Grid.Row="3"
+            Grid.Row="4"
             Margin="2,10,0,0"
             HasError="{Binding HasError}"
             Text="{Binding Status}" />

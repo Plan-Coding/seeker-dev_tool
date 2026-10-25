@@ -74,16 +74,11 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource ToolSectionLabel}" Text="Header" />
-                <ui:TextBox
+                <controls:CodeEditor
                     Grid.Row="1"
-                    AcceptsReturn="True"
-                    FontFamily="Cascadia Mono, Consolas"
-                    FontSize="13"
-                    HorizontalScrollBarVisibility="Auto"
+                    HighlightingName="Json"
                     IsReadOnly="True"
-                    Text="{Binding HeaderJson, Mode=OneWay}"
-                    TextWrapping="NoWrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    Text="{Binding HeaderJson, Mode=OneWay}" />
             </Grid>
 
             <Grid Grid.Column="2">
@@ -92,16 +87,11 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource ToolSectionLabel}" Text="Payload" />
-                <ui:TextBox
+                <controls:CodeEditor
                     Grid.Row="1"
-                    AcceptsReturn="True"
-                    FontFamily="Cascadia Mono, Consolas"
-                    FontSize="13"
-                    HorizontalScrollBarVisibility="Auto"
+                    HighlightingName="Json"
                     IsReadOnly="True"
-                    Text="{Binding PayloadJson, Mode=OneWay}"
-                    TextWrapping="NoWrap"
-                    VerticalScrollBarVisibility="Auto" />
+                    Text="{Binding PayloadJson, Mode=OneWay}" />
             </Grid>
         </Grid>
 

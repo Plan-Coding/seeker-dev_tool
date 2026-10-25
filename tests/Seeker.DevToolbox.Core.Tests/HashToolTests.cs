@@ -31,4 +31,20 @@ public class HashToolTests
             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             HashTool.Compute(string.Empty, HashKind.Sha256));
     }
+
+    [Fact]
+    public void ComputeFile_MatchesTextHash()
+    {
+        var path = Path.Combine(Path.GetTempPath(), $"seeker-hash-{Guid.NewGuid():N}.txt");
+
+        try
+        {
+            File.WriteAllText(path, "abc", new System.Text.UTF8Encoding(false));
+            Assert.Equal(HashTool.Compute("abc", HashKind.Sha256), HashTool.ComputeFile(path, HashKind.Sha256));
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
 }

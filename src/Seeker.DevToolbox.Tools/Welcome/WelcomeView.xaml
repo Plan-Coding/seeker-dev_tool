@@ -130,7 +130,7 @@
                             Margin="0,6,0,0"
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="M1 常用工具集"
+                            Text="M2 增强工具集"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>

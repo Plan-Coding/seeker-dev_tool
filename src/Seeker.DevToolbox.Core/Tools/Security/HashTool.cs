@@ -30,6 +30,24 @@ public static class HashTool
         return ToHex(HmacData(keyBytes, data, kind));
     }
 
+    public static string ComputeFile(string path, HashKind kind)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
+
+        using var stream = File.OpenRead(path);
+
+        var hash = kind switch
+        {
+            HashKind.Md5 => MD5.HashData(stream),
+            HashKind.Sha1 => SHA1.HashData(stream),
+            HashKind.Sha256 => SHA256.HashData(stream),
+            HashKind.Sha512 => SHA512.HashData(stream),
+            _ => throw new ArgumentOutOfRangeException(nameof(kind))
+        };
+
+        return ToHex(hash);
+    }
+
     private static byte[] HashData(byte[] data, HashKind kind) => kind switch
     {
         HashKind.Md5 => MD5.HashData(data),

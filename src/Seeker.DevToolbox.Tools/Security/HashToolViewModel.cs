@@ -1,3 +1,4 @@
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Seeker.DevToolbox.Core.Tools.Security;
@@ -18,6 +19,9 @@ public partial class HashToolViewModel : ToolViewModelBase
 
     [ObservableProperty]
     private string _output = string.Empty;
+
+    [ObservableProperty]
+    private string _filePath = string.Empty;
 
     public HashToolViewModel()
     {
@@ -51,14 +55,64 @@ public partial class HashToolViewModel : ToolViewModelBase
     }
 
     [RelayCommand]
+    private void ChooseFile()
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = "选择要计算哈希的文件",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            FilePath = dialog.FileName;
+            ComputeFile();
+        }
+    }
+
+    [RelayCommand]
+    private void ComputeFile()
+    {
+        if (!File.Exists(FilePath))
+        {
+            SetStatus("请先选择文件", true);
+            return;
+        }
+
+        RunSafely(() =>
+        {
+            Output = HashTool.ComputeFile(FilePath, CurrentKind);
+            var info = new FileInfo(FilePath);
+            SetStatus($"{info.Name} · {FormatSize(info.Length)} · {Algorithms[AlgorithmIndex]} 计算完成");
+        });
+    }
+
+    [RelayCommand]
     private void Clear()
     {
         Input = string.Empty;
         HmacKey = string.Empty;
+        FilePath = string.Empty;
         Output = string.Empty;
         SetStatus("已清空");
     }
 
     [RelayCommand]
     private void Copy() => TryCopy(Output);
+
+    private static string FormatSize(long bytes)
+    {
+        string[] units = ["B", "KB", "MB", "GB", "TB"];
+        var value = (double)bytes;
+        var unit = 0;
+
+        while (value >= 1024 && unit < units.Length - 1)
+        {
+            value /= 1024;
+            unit++;
+        }
+
+        return $"{value:0.#} {units[unit]}";
+    }
 }
