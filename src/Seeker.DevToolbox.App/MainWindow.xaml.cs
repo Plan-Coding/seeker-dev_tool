@@ -42,8 +42,6 @@ public partial class MainWindow : FluentWindow
         _viewModel.VisibleTools.CollectionChanged += OnVisibleToolsChanged;
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
-        Nav.ItemInvoked += OnNavItemInvoked;
-
         RebuildMenu();
         UpdateThemeIcon();
 
@@ -101,14 +99,14 @@ public partial class MainWindow : FluentWindow
         RebuildMenu();
     }
 
-    private void OnNavItemInvoked(NavigationView sender, RoutedEventArgs args)
+    private void OnNavItemClick(object sender, RoutedEventArgs e)
     {
         if (_isRebuildingMenu)
         {
             return;
         }
 
-        if (sender.SelectedItem is NavigationViewItem { Tag: string id })
+        if (sender is NavigationViewItem { Tag: string id })
         {
             SelectTool(_viewModel.VisibleTools.FirstOrDefault(item => item.Id == id));
         }
@@ -186,12 +184,18 @@ public partial class MainWindow : FluentWindow
 
             foreach (var item in _viewModel.VisibleTools)
             {
-                Nav.MenuItems.Add(new NavigationViewItem
+                var navItem = new NavigationViewItem
                 {
                     Content = item.Title,
                     Tag = item.Id,
                     Icon = new SymbolIcon { Symbol = item.Symbol }
-                });
+                };
+
+                // WPF-UI 只在 TargetPageType 非空时才触发 ItemInvoked。
+                // 我们的视图由 IToolModule 按需创建,所以直接监听按钮 Click。
+                navItem.Click += OnNavItemClick;
+
+                Nav.MenuItems.Add(navItem);
             }
         }
         finally
