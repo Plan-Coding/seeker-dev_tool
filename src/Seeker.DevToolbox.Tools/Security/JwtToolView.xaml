@@ -1,0 +1,114 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Security.JwtToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="JWT 解析"
+            Description="解码 Header 与 Payload,检查 exp / nbf 是否有效。仅解码,不验证签名。" />
+
+        <Grid Grid.Row="1" Margin="0,18,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource ToolSectionLabel}" Text="JWT Token" />
+            <ui:TextBox
+                Grid.Row="1"
+                Height="88"
+                AcceptsReturn="True"
+                FontFamily="Cascadia Mono, Consolas"
+                FontSize="12"
+                PlaceholderText="粘贴 JWT,可带 Bearer 前缀…"
+                Text="{Binding Token, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+        </Grid>
+
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,14,0,14"
+            Orientation="Horizontal">
+            <ui:Button
+                Appearance="Primary"
+                Command="{Binding ParseCommand}"
+                Content="解析" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding LoadSampleCommand}"
+                Content="示例" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding CopyPayloadCommand}"
+                Content="复制 Payload" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ClearCommand}"
+                Content="清空" />
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="Header" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding HeaderJson, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="Payload" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding PayloadJson, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="4"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>

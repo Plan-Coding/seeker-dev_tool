@@ -1,0 +1,106 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Codecs.UrlToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="URL 编解码"
+            Description="等价于 encodeURIComponent / decodeURIComponent;表单编码可用 + 表示空格。" />
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,18,0,14"
+            Orientation="Horizontal">
+            <ui:Button
+                Appearance="Primary"
+                Command="{Binding EncodeCommand}"
+                Content="编码" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding DecodeCommand}"
+                Content="解码" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding SwapCommand}"
+                Content="交换" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ClearCommand}"
+                Content="清空" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding CopyCommand}"
+                Content="复制结果" />
+            <CheckBox
+                Margin="16,0,0,0"
+                VerticalAlignment="Center"
+                Content="解码时 + 作为空格"
+                IsChecked="{Binding PlusAsSpace}" />
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    PlaceholderText="输入文本或 URL…"
+                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输出" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    PlaceholderText="结果…"
+                    Text="{Binding Output, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="3"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>

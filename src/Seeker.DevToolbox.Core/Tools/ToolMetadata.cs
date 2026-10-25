@@ -34,6 +34,8 @@ public static class ToolCategories
     public const string Text = "文本";
     public const string Encoding = "编码";
     public const string Security = "安全";
+    public const string Time = "时间";
+    public const string Generate = "生成";
     public const string Network = "网络";
     public const string System = "系统";
 }

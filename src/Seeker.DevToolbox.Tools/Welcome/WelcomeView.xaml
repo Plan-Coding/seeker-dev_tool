@@ -130,7 +130,7 @@
                             Margin="0,6,0,0"
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="M0 骨架 + JSON 垂直切片"
+                            Text="M1 常用工具集"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>

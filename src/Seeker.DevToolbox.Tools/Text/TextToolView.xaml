@@ -1,0 +1,106 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Text.TextToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="文本处理"
+            Description="命名风格互转,以及排序、去重、去空行、去首尾空格、加行号等常用批量操作。" />
+
+        <WrapPanel Grid.Row="1" Margin="0,18,0,8">
+            <ui:Button Appearance="Primary" Command="{Binding ToCamelCaseCommand}" Content="驼峰" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToPascalCaseCommand}" Content="Pascal" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToSnakeCaseCommand}" Content="下划线" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToKebabCaseCommand}" Content="短横线" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToConstantCaseCommand}" Content="常量" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToTitleCaseCommand}" Content="标题" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToUpperCaseCommand}" Content="大写" />
+            <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ToLowerCaseCommand}" Content="小写" />
+        </WrapPanel>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,12">
+            <WrapPanel>
+                <ui:Button Appearance="Secondary" Command="{Binding SortLinesCommand}" Content="排序" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding RemoveDuplicatesCommand}" Content="去重" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding RemoveEmptyLinesCommand}" Content="去空行" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding TrimLinesCommand}" Content="去首尾空格" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding AddLineNumbersCommand}" Content="加行号" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding SwapCommand}" Content="交换" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding ClearCommand}" Content="清空" />
+                <ui:Button Margin="8,0,0,0" Appearance="Secondary" Command="{Binding CopyCommand}" Content="复制结果" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,10,0,0">
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="排序/去重忽略大小写"
+                    IsChecked="{Binding IgnoreCase}" />
+                <CheckBox
+                    Margin="16,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="去重前 Trim"
+                    IsChecked="{Binding TrimBeforeDedupe}" />
+            </WrapPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输出" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding Output, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="4"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>

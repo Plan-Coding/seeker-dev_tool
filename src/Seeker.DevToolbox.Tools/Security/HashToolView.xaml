@@ -1,0 +1,106 @@
+<UserControl
+    x:Class="Seeker.DevToolbox.Tools.Security.HashToolView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Seeker.DevToolbox.UI.Controls;assembly=Seeker.DevToolbox.UI"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <controls:ToolPageHeader
+            Title="哈希计算"
+            Description="按 UTF-8 编码计算摘要;填写 HMAC 密钥后切换为 HMAC 模式。" />
+
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,18,0,14"
+            Orientation="Horizontal">
+            <ComboBox
+                Width="120"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Algorithms}"
+                SelectedIndex="{Binding AlgorithmIndex}" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Primary"
+                Command="{Binding ComputeCommand}"
+                Content="计算" />
+            <TextBlock
+                Margin="16,0,8,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                Text="HMAC 密钥" />
+            <ui:TextBox
+                Width="220"
+                VerticalAlignment="Center"
+                PlaceholderText="可选"
+                Text="{Binding HmacKey, UpdateSourceTrigger=PropertyChanged}" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ClearCommand}"
+                Content="清空" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding CopyCommand}"
+                Content="复制结果" />
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    PlaceholderText="输入要计算哈希的文本…"
+                    Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource ToolSectionLabel}" Text="结果(小写十六进制)" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    FontFamily="Cascadia Mono, Consolas"
+                    FontSize="13"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    Text="{Binding Output, Mode=OneWay}"
+                    TextWrapping="NoWrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+
+        <controls:ToolStatusBar
+            Grid.Row="3"
+            Margin="2,10,0,0"
+            HasError="{Binding HasError}"
+            Text="{Binding Status}" />
+    </Grid>
+</UserControl>
