@@ -41,6 +41,11 @@
             <ui:Button
                 Margin="8,0,0,0"
                 Appearance="Secondary"
+                Command="{Binding FormatJson5Command}"
+                Content="JSON5" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
                 Command="{Binding LoadSampleCommand}"
                 Content="示例" />
             <ui:Button

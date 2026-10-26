@@ -130,7 +130,7 @@
                             Margin="0,6,0,0"
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="M5 系统工具"
+                            Text="M6 请求与进程"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
@@ -183,6 +183,7 @@
         </StackPanel>
     </ScrollViewer>
 </UserControl>
+
 
 
 

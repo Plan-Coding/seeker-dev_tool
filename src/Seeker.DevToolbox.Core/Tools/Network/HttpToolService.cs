@@ -9,7 +9,8 @@ public sealed record HttpToolRequest(
     string Url,
     string Headers = "",
     string Body = "",
-    int TimeoutSeconds = 30);
+    int TimeoutSeconds = 30,
+    string Cookie = "");
 
 public sealed record HttpToolResult(
     int StatusCode,
@@ -56,6 +57,11 @@ public static class HttpToolService
             {
                 request.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
+        }
+
+        if (!string.IsNullOrWhiteSpace(options.Cookie))
+        {
+            request.Headers.TryAddWithoutValidation("Cookie", options.Cookie);
         }
 
         using var timeoutSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);

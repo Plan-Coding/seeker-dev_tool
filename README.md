@@ -16,7 +16,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ![JSON 深色主题](docs/screenshots/json-dark.png)
 
-## 当前状态(M5 已完成)
+## 当前状态(M6 已完成)
 
 - [x] Fluent 主窗口:WPF-UI `FluentWindow` + Win11 Mica + 圆角
 - [x] 左侧 `NavigationView`:搜索过滤、最近使用排序、支持滚动、快捷键 `Ctrl+K`
@@ -27,9 +27,10 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 - [x] 工具模块化:`IToolModule` 契约 + 按需创建、缓存视图
 - [x] AvalonEdit 代码编辑器:行号、双向绑定、主题感知 JSON / YAML / XML 高亮
 - [x] 编码转换支持整文件检测、转换、另存为与批量转换
-- [x] 端口占用与进程查看,支持过滤和复制列表
+- [x] 端口占用与进程查看,支持过滤、复制、打开目录与结束进程
+- [x] JSON 工具支持 JSON5;HTTP 工具支持历史与 Cookie
 - [x] 绿色版发布脚本(目录版 + 单文件 exe + zip + SHA256)
-- [x] 130 个 Core 单元测试
+- [x] 136 个 Core 单元测试
 - [x] 18 个工具全部通过真实点击冒烟测试
 
 ### 工具清单
@@ -37,7 +38,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 分类 | 工具 | 能力 |
 |---|---|---|
 | 常用 | 欢迎 | 运行模式、数据目录、快捷键提示 |
-| 数据 | JSON 格式化 | 格式化 / 压缩 / 校验,支持尾逗号、注释 |
+| 数据 | JSON 格式化 | 格式化 / 压缩 / 校验 / JSON5,支持尾逗号、注释 |
 | 数据 | XML 格式化 | 格式化 / 压缩 / 校验,带语法高亮 |
 | 数据 | YAML / JSON | YAML ↔ JSON 互转、YAML 格式化,带语法高亮 |
 | 编码 | Base64 编解码 | UTF-8 文本互转,URL-safe 变体 |
@@ -51,9 +52,9 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 安全 | JWT 解析 | Header/Payload 解码,exp/nbf 检查 |
 | 生成 | UUID 生成 | UUID v4 / v7,批量、大小写、连字符 |
 | 设计 | 颜色转换 | HEX / RGB / HSL / HSV,颜色预览 |
-| 网络 | HTTP 请求 | GET/POST/PUT/PATCH/DELETE,状态码、响应头、响应体 |
+| 网络 | HTTP 请求 | GET/POST/PUT/PATCH/DELETE,历史、Cookie、响应头/响应体 |
 | 系统 | 端口占用 | TCP 监听端口、PID、进程名,支持过滤 |
-| 系统 | 进程查看 | PID、进程名、内存、启动时间、路径,支持过滤 |
+| 系统 | 进程查看 | PID、进程名、内存、启动时间、路径,支持过滤、定位与结束进程 |
 
 ## 快速开始
 
@@ -84,10 +85,10 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ```
 artifacts/
-├─ Seeker.DevToolbox-0.6.0-portable/        # 目录绿色版
-├─ Seeker.DevToolbox-0.6.0-single/          # 单文件版
-├─ Seeker.DevToolbox-0.6.0-portable-win-x64.zip
-├─ Seeker.DevToolbox-0.6.0-single-win-x64.zip
+├─ Seeker.DevToolbox-0.7.0-portable/        # 目录绿色版
+├─ Seeker.DevToolbox-0.7.0-single/          # 单文件版
+├─ Seeker.DevToolbox-0.7.0-portable-win-x64.zip
+├─ Seeker.DevToolbox-0.7.0-single-win-x64.zip
 └─ SHA256SUMS.txt
 ```
 
@@ -169,8 +170,10 @@ ViewModel 继承 `ToolViewModelBase` 即可复用状态栏、错误标记和剪�
 - HTTP 工具暂不支持文件上传、客户端证书和 Cookie 管理。
 - 端口工具仅列出 TCP 监听端口;进程工具暂不提供结束进程操作。
 - 未做代码签名。
-- 下一步:JSON5、HTTP 历史/Cookie、进程操作、插件扩展。
+- 下一步:请求集合/环境变量、批量文件编码规则、插件扩展。
 
 详细选型与架构见 [docs/技术选型与架构方案.md](docs/技术选型与架构方案.md)。
+
+
 
 

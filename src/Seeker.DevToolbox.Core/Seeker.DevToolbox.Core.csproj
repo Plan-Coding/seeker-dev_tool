@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="DiffPlex" Version="1.9.0" />
+    <PackageReference Include="Json5" Version="1.0.4" />
     <PackageReference Include="YamlDotNet" Version="18.1.0" />
   </ItemGroup>
 

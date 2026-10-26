@@ -36,6 +36,16 @@
                 Appearance="Secondary"
                 Command="{Binding CopyCommand}"
                 Content="复制列表" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding OpenLocationCommand}"
+                Content="打开所在目录" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Danger"
+                Command="{Binding KillProcessCommand}"
+                Content="结束进程" />
         </WrapPanel>
 
         <Grid Grid.Row="2" Margin="10,0,24,6">
@@ -57,7 +67,9 @@
             Grid.Row="3"
             Background="Transparent"
             BorderThickness="0"
-            ItemsSource="{Binding Processes}">
+            ItemsSource="{Binding Processes}"
+            SelectedItem="{Binding SelectedProcess, Mode=TwoWay}"
+            SelectionMode="Single">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

@@ -39,6 +39,21 @@ public partial class JsonToolViewModel : ObservableObject
     private void Minify() => Run(JsonIndentStyle.None);
 
     [RelayCommand]
+    private void FormatJson5()
+    {
+        if (!Json5Converter.TryToJson(Input, out var result, out var error))
+        {
+            Status = error ?? "JSON5 格式化失败";
+            HasError = true;
+            return;
+        }
+
+        Output = result;
+        Status = $"JSON5 → JSON 完成 · {result.Length:N0} 字符";
+        HasError = false;
+    }
+
+    [RelayCommand]
     private void LoadSample()
     {
         Input = SampleJson;

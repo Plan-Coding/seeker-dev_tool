@@ -1,4 +1,7 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Seeker.DevToolbox.Core.Tools.SystemTools;
@@ -13,6 +16,9 @@ public partial class ProcessToolViewModel : ToolViewModelBase
     [ObservableProperty]
     private string _searchText = string.Empty;
 
+    [ObservableProperty]
+    private ProcessItem? _selectedProcess;
+
     public ProcessToolViewModel()
     {
         Refresh();
@@ -23,6 +29,8 @@ public partial class ProcessToolViewModel : ToolViewModelBase
     [RelayCommand]
     private void Refresh()
     {
+        SelectedProcess = null;
+
         _all = ProcessScanner.GetProcesses()
             .Select(entry => new ProcessItem(
                 entry.Pid,
@@ -34,6 +42,79 @@ public partial class ProcessToolViewModel : ToolViewModelBase
 
         ApplyFilter();
         SetStatus($"共 {_all.Count} 个进程");
+    }
+
+    [RelayCommand(CanExecute = nameof(CanActOnProcess))]
+    private void OpenLocation()
+    {
+        var target = SelectedProcess;
+
+        if (target is null || string.IsNullOrWhiteSpace(target.FilePath) || target.FilePath == "-")
+        {
+            SetStatus("该进程没有可用的文件路径", true);
+            return;
+        }
+
+        if (!File.Exists(target.FilePath))
+        {
+            SetStatus("可执行文件已不存在", true);
+            return;
+        }
+
+        Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{target.FilePath}\"")
+        {
+            UseShellExecute = true
+        });
+
+        SetStatus($"已在资源管理器中定位:{Path.GetFileName(target.FilePath)}");
+    }
+
+    [RelayCommand(CanExecute = nameof(CanActOnProcess))]
+    private void KillProcess()
+    {
+        var target = SelectedProcess;
+
+        if (target is null)
+        {
+            return;
+        }
+
+        if (target.Pid == Environment.ProcessId)
+        {
+            SetStatus("不能结束当前程序", true);
+            return;
+        }
+
+        var confirm = MessageBox.Show(
+            $"确定结束进程 {target.Name}(PID {target.Pid})?\n未保存的数据可能丢失。",
+            "结束进程",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (confirm != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        try
+        {
+            using var process = Process.GetProcessById(target.Pid);
+            process.Kill();
+            SetStatus($"已结束 {target.Name}(PID {target.Pid})");
+            Refresh();
+        }
+        catch (Exception ex) when (ex is ArgumentException or InvalidOperationException or System.ComponentModel.Win32Exception or NotSupportedException)
+        {
+            SetStatus($"结束失败:{ex.Message}", true);
+        }
+    }
+
+    private bool CanActOnProcess() => SelectedProcess is not null;
+
+    partial void OnSelectedProcessChanged(ProcessItem? value)
+    {
+        OpenLocationCommand.NotifyCanExecuteChanged();
+        KillProcessCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]
