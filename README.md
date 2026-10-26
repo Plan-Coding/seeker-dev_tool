@@ -6,6 +6,8 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ![端口占用](docs/screenshots/ports.png)
 
+![进程查看](docs/screenshots/process.png)
+
 ![YAML / JSON](docs/screenshots/yaml.png)
 
 ![HTTP 请求](docs/screenshots/http.png)
@@ -14,7 +16,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ![JSON 深色主题](docs/screenshots/json-dark.png)
 
-## 当前状态(M4 已完成)
+## 当前状态(M5 已完成)
 
 - [x] Fluent 主窗口:WPF-UI `FluentWindow` + Win11 Mica + 圆角
 - [x] 左侧 `NavigationView`:搜索过滤、最近使用排序、支持滚动、快捷键 `Ctrl+K`
@@ -24,10 +26,11 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 - [x] 全局异常兜底 + Serilog 滚动日志
 - [x] 工具模块化:`IToolModule` 契约 + 按需创建、缓存视图
 - [x] AvalonEdit 代码编辑器:行号、双向绑定、主题感知 JSON / YAML / XML 高亮
-- [x] 编码转换支持整文件检测、转换与另存为
+- [x] 编码转换支持整文件检测、转换、另存为与批量转换
+- [x] 端口占用与进程查看,支持过滤和复制列表
 - [x] 绿色版发布脚本(目录版 + 单文件 exe + zip + SHA256)
-- [x] 128 个 Core 单元测试
-- [x] 17 个工具全部通过真实点击冒烟测试
+- [x] 130 个 Core 单元测试
+- [x] 18 个工具全部通过真实点击冒烟测试
 
 ### 工具清单
 
@@ -39,7 +42,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 数据 | YAML / JSON | YAML ↔ JSON 互转、YAML 格式化,带语法高亮 |
 | 编码 | Base64 编解码 | UTF-8 文本互转,URL-safe 变体 |
 | 编码 | URL 编解码 | 组件级编码/解码,表单 `+` 空格语义 |
-| 编码 | 编码转换 | GBK / UTF-8 / Big5 / UTF-16 互转,支持整文件 |
+| 编码 | 编码转换 | GBK / UTF-8 / Big5 / UTF-16 互转,支持整文件与批量转换 |
 | 时间 | 时间戳转换 | 秒/毫秒/自动识别,日期 ↔ 本地/UTC/ISO 8601 |
 | 文本 | 文本处理 | 驼峰/Pascal/下划线/短横线/常量、排序、去重、去空行、加行号 |
 | 文本 | 文本 Diff | 逐行比较,新增/删除/修改高亮 |
@@ -50,6 +53,7 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 | 设计 | 颜色转换 | HEX / RGB / HSL / HSV,颜色预览 |
 | 网络 | HTTP 请求 | GET/POST/PUT/PATCH/DELETE,状态码、响应头、响应体 |
 | 系统 | 端口占用 | TCP 监听端口、PID、进程名,支持过滤 |
+| 系统 | 进程查看 | PID、进程名、内存、启动时间、路径,支持过滤 |
 
 ## 快速开始
 
@@ -80,10 +84,10 @@ Windows 开发者工具箱,**免安装、离线可用**。基于 .NET 10 + WPF +
 
 ```
 artifacts/
-├─ Seeker.DevToolbox-0.5.0-portable/        # 目录绿色版
-├─ Seeker.DevToolbox-0.5.0-single/          # 单文件版
-├─ Seeker.DevToolbox-0.5.0-portable-win-x64.zip
-├─ Seeker.DevToolbox-0.5.0-single-win-x64.zip
+├─ Seeker.DevToolbox-0.6.0-portable/        # 目录绿色版
+├─ Seeker.DevToolbox-0.6.0-single/          # 单文件版
+├─ Seeker.DevToolbox-0.6.0-portable-win-x64.zip
+├─ Seeker.DevToolbox-0.6.0-single-win-x64.zip
 └─ SHA256SUMS.txt
 ```
 
@@ -163,8 +167,10 @@ ViewModel 继承 `ToolViewModelBase` 即可复用状态栏、错误标记和剪�
 
 - 单文件版首次启动较慢(`%TEMP%` 解压),日常使用建议目录版。
 - HTTP 工具暂不支持文件上传、客户端证书和 Cookie 管理。
-- 端口工具仅列出 TCP 监听端口,暂不显示进程资源占用。
+- 端口工具仅列出 TCP 监听端口;进程工具暂不提供结束进程操作。
 - 未做代码签名。
-- 下一步:JSON5、进程详情、HTTP 历史/Cookie、文件批量编码转换。
+- 下一步:JSON5、HTTP 历史/Cookie、进程操作、插件扩展。
 
 详细选型与架构见 [docs/技术选型与架构方案.md](docs/技术选型与架构方案.md)。
+
+

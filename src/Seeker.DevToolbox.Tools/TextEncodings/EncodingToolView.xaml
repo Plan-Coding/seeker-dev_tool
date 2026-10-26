@@ -65,6 +65,11 @@
                 Appearance="Secondary"
                 Command="{Binding CopyCommand}"
                 Content="复制结果" />
+            <ui:Button
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding BatchConvertCommand}"
+                Content="批量转换" />
         </WrapPanel>
 
         <Grid Grid.Row="2" Margin="0,14,0,0">

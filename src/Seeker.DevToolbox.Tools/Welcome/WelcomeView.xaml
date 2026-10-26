@@ -130,7 +130,7 @@
                             Margin="0,6,0,0"
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="M4 系统与编码"
+                            Text="M5 系统工具"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
@@ -183,5 +183,6 @@
         </StackPanel>
     </ScrollViewer>
 </UserControl>
+
 
 

@@ -146,6 +146,66 @@ public partial class EncodingToolViewModel : ToolViewModelBase
     private bool CanSaveAs() => !string.IsNullOrWhiteSpace(FilePath);
 
     [RelayCommand]
+    private void BatchConvert()
+    {
+        var source = Encodings[SourceIndex];
+        var target = Encodings[TargetIndex];
+
+        var filesDialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = "选择要批量转换的文件",
+            Multiselect = true,
+            CheckFileExists = true
+        };
+
+        if (filesDialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        var folderDialog = new Microsoft.Win32.OpenFolderDialog
+        {
+            Title = "选择输出目录"
+        };
+
+        if (folderDialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        var success = 0;
+        var failed = 0;
+        var skipped = 0;
+
+        foreach (var file in filesDialog.FileNames)
+        {
+            var outputPath = Path.Combine(folderDialog.FolderName, Path.GetFileName(file));
+
+            if (string.Equals(
+                    Path.GetFullPath(file),
+                    Path.GetFullPath(outputPath),
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                skipped++;
+                continue;
+            }
+
+            if (FileEncodingService.TryConvertFile(file, outputPath, source.Id, target.Id, WriteBom, out _))
+            {
+                success++;
+            }
+            else
+            {
+                failed++;
+            }
+        }
+
+        SetStatus(
+            $"批量转换完成:成功 {success},失败 {failed}"
+            + (skipped > 0 ? $",跳过 {skipped}(输出目录与源文件相同)" : string.Empty));
+    }
+
+    [RelayCommand]
     private void Clear()
     {
         Input = string.Empty;

@@ -38,7 +38,8 @@ public static class ToolCatalog
         new IdToolModule(),
         new ColorToolModule(),
         new HttpToolModule(),
-        new PortsToolModule()
+        new PortsToolModule(),
+        new ProcessToolModule()
     ];
 }
 
