@@ -70,7 +70,7 @@
                 <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
                 <controls:CodeEditor
                     Grid.Row="1"
-                    HighlightingName=""
+                    HighlightingName="Xml"
                     Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
@@ -82,7 +82,7 @@
                 <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输出" />
                 <controls:CodeEditor
                     Grid.Row="1"
-                    HighlightingName=""
+                    HighlightingName="Xml"
                     IsReadOnly="True"
                     Text="{Binding Output, Mode=OneWay}" />
             </Grid>
@@ -95,3 +95,4 @@
             Text="{Binding Status}" />
     </Grid>
 </UserControl>
+

@@ -10,20 +10,21 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <controls:ToolPageHeader
             Title="编码转换"
-            Description="按源编码还原字节,再按目标编码解码;常用于修复 GBK/UTF-8 乱码。" />
+            Description="按源编码还原字节,再按目标编码解码;支持文本乱码修复与整文件转换。" />
 
         <WrapPanel Grid.Row="1" Margin="0,18,0,0">
             <ComboBox
                 Width="160"
                 VerticalAlignment="Center"
-                ItemsSource="{Binding Encodings}"
                 DisplayMemberPath="DisplayName"
+                ItemsSource="{Binding Encodings}"
                 SelectedIndex="{Binding SourceIndex}" />
 
             <TextBlock
@@ -35,8 +36,8 @@
             <ComboBox
                 Width="160"
                 VerticalAlignment="Center"
-                ItemsSource="{Binding Encodings}"
                 DisplayMemberPath="DisplayName"
+                ItemsSource="{Binding Encodings}"
                 SelectedIndex="{Binding TargetIndex}" />
 
             <ui:Button
@@ -66,13 +67,60 @@
                 Content="复制结果" />
         </WrapPanel>
 
-        <TextBlock
-            Grid.Row="2"
-            Margin="2,10,0,14"
-            Style="{StaticResource ToolHintText}"
-            Text="示例:输入「浣犲ソ」,源编码 GBK、目标 UTF-8,可还原为「你好」。" />
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="3">
+            <TextBlock
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                Text="文件" />
+
+            <ui:TextBox
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                IsReadOnly="True"
+                PlaceholderText="选择文件后可预览并整文件转换…"
+                Text="{Binding FilePath, Mode=OneWay}" />
+
+            <ui:Button
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding ChooseFileCommand}"
+                Content="选择文件" />
+
+            <ui:Button
+                Grid.Column="3"
+                Margin="8,0,0,0"
+                Appearance="Secondary"
+                Command="{Binding SaveAsCommand}"
+                Content="另存为" />
+
+            <CheckBox
+                Grid.Column="4"
+                Margin="12,0,0,0"
+                VerticalAlignment="Center"
+                Content="写入 BOM"
+                IsChecked="{Binding WriteBom}" />
+        </Grid>
+
+        <StackPanel Grid.Row="3" Margin="2,8,0,12">
+            <TextBlock
+                Style="{StaticResource ToolHintText}"
+                Text="{Binding FileInfo}" />
+            <TextBlock
+                Style="{StaticResource ToolHintText}"
+                Text="示例:输入「浣犲ソ」,源编码 GBK、目标 UTF-8,可还原为「你好」。" />
+        </StackPanel>
+
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="14" />
@@ -116,10 +164,9 @@
         </Grid>
 
         <controls:ToolStatusBar
-            Grid.Row="4"
+            Grid.Row="5"
             Margin="2,10,0,0"
             HasError="{Binding HasError}"
             Text="{Binding Status}" />
     </Grid>
 </UserControl>
-

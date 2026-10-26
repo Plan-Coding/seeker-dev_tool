@@ -64,7 +64,7 @@
                 <TextBlock Style="{StaticResource ToolSectionLabel}" Text="输入" />
                 <controls:CodeEditor
                     Grid.Row="1"
-                    HighlightingName=""
+                    HighlightingName="{Binding InputHighlighting}"
                     Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 

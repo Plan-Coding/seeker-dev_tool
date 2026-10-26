@@ -25,6 +25,9 @@ public partial class YamlToolViewModel : ToolViewModelBase
     private string _output = string.Empty;
 
     [ObservableProperty]
+    private string _inputHighlighting = "Yaml";
+
+    [ObservableProperty]
     private string _outputHighlighting = "Json";
 
     public YamlToolViewModel()
@@ -42,6 +45,7 @@ public partial class YamlToolViewModel : ToolViewModelBase
         }
 
         Output = result;
+        InputHighlighting = "Yaml";
         OutputHighlighting = "Json";
         SetStatus($"YAML → JSON 完成 · {result.Length:N0} 字符");
     }
@@ -56,7 +60,8 @@ public partial class YamlToolViewModel : ToolViewModelBase
         }
 
         Output = result;
-        OutputHighlighting = "";
+        InputHighlighting = "Json";
+        OutputHighlighting = "Yaml";
         SetStatus($"JSON → YAML 完成 · {result.Length:N0} 字符");
     }
 
@@ -70,7 +75,8 @@ public partial class YamlToolViewModel : ToolViewModelBase
         }
 
         Output = result;
-        OutputHighlighting = "";
+        InputHighlighting = "Yaml";
+        OutputHighlighting = "Yaml";
         SetStatus($"YAML 格式化完成 · {result.Length:N0} 字符");
     }
 

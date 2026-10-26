@@ -14,6 +14,78 @@ namespace Seeker.DevToolbox.UI.Controls;
 /// </summary>
 public class CodeEditor : TextEditor
 {
+    private const string YamlDarkXshd = """
+        <?xml version="1.0"?>
+        <SyntaxDefinition name="YamlDark" extensions=".yaml;.yml" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+          <Color name="Key" foreground="#9CDCFE" />
+          <Color name="String" foreground="#CE9178" />
+          <Color name="Number" foreground="#B5CEA8" />
+          <Color name="Keyword" foreground="#569CD6" />
+          <Color name="Comment" foreground="#6A9955" />
+          <RuleSet>
+            <Span color="Comment" begin="#" />
+            <Rule color="Key">(?m)^[ \t]*(?:-[ \t]*)?[^#\s][^:]*?(?=\s*:)</Rule>
+            <Rule color="String">("(?:\\.|[^"])*"|'(?:''|[^'])*')</Rule>
+            <Rule color="Number">\b-?\d+(\.\d+)?\b</Rule>
+            <Rule color="Keyword">\b(true|false|null|yes|no|on|off)\b</Rule>
+          </RuleSet>
+        </SyntaxDefinition>
+        """;
+
+    private const string YamlLightXshd = """
+        <?xml version="1.0"?>
+        <SyntaxDefinition name="YamlLight" extensions=".yaml;.yml" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+          <Color name="Key" foreground="#0451A5" />
+          <Color name="String" foreground="#A31515" />
+          <Color name="Number" foreground="#098658" />
+          <Color name="Keyword" foreground="#0000FF" />
+          <Color name="Comment" foreground="#008000" />
+          <RuleSet>
+            <Span color="Comment" begin="#" />
+            <Rule color="Key">(?m)^[ \t]*(?:-[ \t]*)?[^#\s][^:]*?(?=\s*:)</Rule>
+            <Rule color="String">("(?:\\.|[^"])*"|'(?:''|[^'])*')</Rule>
+            <Rule color="Number">\b-?\d+(\.\d+)?\b</Rule>
+            <Rule color="Keyword">\b(true|false|null|yes|no|on|off)\b</Rule>
+          </RuleSet>
+        </SyntaxDefinition>
+        """;
+
+    private const string XmlDarkXshd = """
+        <?xml version="1.0"?>
+        <SyntaxDefinition name="XmlDark" extensions=".xml;.config" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+          <Color name="Tag" foreground="#569CD6" />
+          <Color name="Attribute" foreground="#9CDCFE" />
+          <Color name="String" foreground="#CE9178" />
+          <Color name="Comment" foreground="#6A9955" />
+          <Color name="Entity" foreground="#D7BA7D" />
+          <RuleSet>
+            <Span color="Comment" begin="&lt;!--" end="--&gt;" multiline="true" />
+            <Rule color="Tag">&lt;/?[\w:.-]+</Rule>
+            <Rule color="Attribute">[\w:.-]+(?=\s*=)</Rule>
+            <Rule color="String">"[^"]*"|'[^']*'</Rule>
+            <Rule color="Entity">&amp;[a-zA-Z#0-9]+;</Rule>
+          </RuleSet>
+        </SyntaxDefinition>
+        """;
+
+    private const string XmlLightXshd = """
+        <?xml version="1.0"?>
+        <SyntaxDefinition name="XmlLight" extensions=".xml;.config" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+          <Color name="Tag" foreground="#800000" />
+          <Color name="Attribute" foreground="#0451A5" />
+          <Color name="String" foreground="#A31515" />
+          <Color name="Comment" foreground="#008000" />
+          <Color name="Entity" foreground="#B8860B" />
+          <RuleSet>
+            <Span color="Comment" begin="&lt;!--" end="--&gt;" multiline="true" />
+            <Rule color="Tag">&lt;/?[\w:.-]+</Rule>
+            <Rule color="Attribute">[\w:.-]+(?=\s*=)</Rule>
+            <Rule color="String">"[^"]*"|'[^']*'</Rule>
+            <Rule color="Entity">&amp;[a-zA-Z#0-9]+;</Rule>
+          </RuleSet>
+        </SyntaxDefinition>
+        """;
+
     private const string JsonDarkXshd = """
         <?xml version="1.0"?>
         <SyntaxDefinition name="JsonDark" extensions=".json" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
@@ -58,6 +130,10 @@ public class CodeEditor : TextEditor
 
     private static IHighlightingDefinition? _jsonDark;
     private static IHighlightingDefinition? _jsonLight;
+    private static IHighlightingDefinition? _yamlDark;
+    private static IHighlightingDefinition? _yamlLight;
+    private static IHighlightingDefinition? _xmlDark;
+    private static IHighlightingDefinition? _xmlLight;
 
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         nameof(Text),
@@ -160,18 +236,26 @@ public class CodeEditor : TextEditor
             return;
         }
 
-        if (string.Equals(HighlightingName, "Json", StringComparison.OrdinalIgnoreCase))
-        {
-            var isDark = ApplicationThemeManager.GetAppTheme() != ApplicationTheme.Light;
-            SyntaxHighlighting = isDark
-                ? _jsonDark ??= LoadDefinition(JsonDarkXshd)
-                : _jsonLight ??= LoadDefinition(JsonLightXshd);
-            return;
-        }
+        var isDark = ApplicationThemeManager.GetAppTheme() != ApplicationTheme.Light;
 
-        SyntaxHighlighting = string.IsNullOrWhiteSpace(HighlightingName)
-            ? null
-            : HighlightingManager.Instance.GetDefinition(HighlightingName);
+        SyntaxHighlighting = (HighlightingName ?? string.Empty).ToLowerInvariant() switch
+        {
+            "json" => isDark
+                ? _jsonDark ??= LoadDefinition(JsonDarkXshd)
+                : _jsonLight ??= LoadDefinition(JsonLightXshd),
+
+            "yaml" => isDark
+                ? _yamlDark ??= LoadDefinition(YamlDarkXshd)
+                : _yamlLight ??= LoadDefinition(YamlLightXshd),
+
+            "xml" => isDark
+                ? _xmlDark ??= LoadDefinition(XmlDarkXshd)
+                : _xmlLight ??= LoadDefinition(XmlLightXshd),
+
+            "" => null,
+
+            _ => HighlightingManager.Instance.GetDefinition(HighlightingName)
+        };
     }
 
     private static IHighlightingDefinition LoadDefinition(string xshd)

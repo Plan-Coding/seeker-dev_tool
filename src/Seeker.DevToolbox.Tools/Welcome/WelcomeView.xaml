@@ -130,7 +130,7 @@
                             Margin="0,6,0,0"
                             FontSize="12"
                             Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                            Text="M3 网络与转换"
+                            Text="M4 系统与编码"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
@@ -183,4 +183,5 @@
         </StackPanel>
     </ScrollViewer>
 </UserControl>
+
 

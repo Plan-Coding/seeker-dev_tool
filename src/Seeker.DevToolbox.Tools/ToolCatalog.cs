@@ -5,6 +5,7 @@ using Seeker.DevToolbox.Tools.Generators;
 using Seeker.DevToolbox.Tools.Json;
 using Seeker.DevToolbox.Tools.Network;
 using Seeker.DevToolbox.Tools.Security;
+using Seeker.DevToolbox.Tools.SystemTools;
 using Seeker.DevToolbox.Tools.Text;
 using Seeker.DevToolbox.Tools.Time;
 using Seeker.DevToolbox.Tools.Welcome;
@@ -36,7 +37,8 @@ public static class ToolCatalog
         new JwtToolModule(),
         new IdToolModule(),
         new ColorToolModule(),
-        new HttpToolModule()
+        new HttpToolModule(),
+        new PortsToolModule()
     ];
 }
 
